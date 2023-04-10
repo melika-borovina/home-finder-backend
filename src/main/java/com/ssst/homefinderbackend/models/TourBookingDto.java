@@ -16,6 +16,6 @@ public class TourBookingDto {
     private Date preferredDate;
     private LocalTime preferredTime;
     private String contactInfo;
-    private Integer realEstateID;
+    private Long realEstateId;
 
 }

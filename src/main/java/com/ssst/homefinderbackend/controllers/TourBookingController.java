@@ -27,7 +27,12 @@ public class TourBookingController {
         return tourBookingService.getTourBookingList();
     }
 
-    @GetMapping("/real-estate/{id}")
+    @GetMapping("/list/real-estate/{realEstateId}")
+    public List<TourBookingDto> getTourBookingByRealEstateId(@PathVariable long realEstateId) {
+        return tourBookingService.getTourBookingByRealEstateId(realEstateId);
+    }
+
+    @GetMapping("/{id}")
     public TourBookingDto getTourBooking(@PathVariable long id) {
         return tourBookingService.getTourBooking(id);
     }
@@ -37,7 +42,7 @@ public class TourBookingController {
         return tourBookingService.createTourBooking(tourBooking);
     }
 
-    @PutMapping("/real-estate/{id}")
+    @PutMapping("/{id}")
     public TourBookingDto updateTourBooking(@PathVariable long id, @RequestBody TourBookingDto tourBooking) {
         return tourBookingService.updateTourBooking(id, tourBooking);
     }
