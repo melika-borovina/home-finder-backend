@@ -11,20 +11,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@RequestMapping("/api/real-estate")
 @RestController
 @Slf4j
 public class RealEstateController {
     @Autowired
     RealEstateBusinessService service;
 
-    @GetMapping("/api/real-estate")
+    @GetMapping("")
     ResponseEntity<List<RealEstateEntity>> getRealEstateList() {
         log.info("getRealEstateList() called");
         return new ResponseEntity<>(service.getRealEstateList(), HttpStatus.OK);
     }
 
-    @GetMapping("/api/real-estate/{id}")
+    @GetMapping("/{id}")
     ResponseEntity<Object> getRealEstateById(@PathVariable Integer id) {
         log.info("getRealEstateById() called");
         try {
@@ -34,7 +34,7 @@ public class RealEstateController {
         }
     }
 
-    @PostMapping("/api/real-estate")
+    @PostMapping("")
     ResponseEntity<Object> createRealEstate(@RequestBody RealEstatePayload realEstate) {
         log.info("createRealEstate() called");
         try {
@@ -44,7 +44,7 @@ public class RealEstateController {
         }
     }
 
-    @PutMapping("/api/real-estate/{id}")
+    @PutMapping("/{id}")
     ResponseEntity<Object> updateRealEstateById(@PathVariable Integer id,
                                                 @RequestBody RealEstatePayload realEstate) {
         log.info("updateRealEstateById() called");
@@ -54,7 +54,7 @@ public class RealEstateController {
             return new ResponseEntity<>(new ErrorObject(100, e.getLocalizedMessage()), HttpStatus.BAD_REQUEST);
         }
     }
-    @DeleteMapping("/api/real-estate/{id}")
+    @DeleteMapping("/{id}")
     ResponseEntity<Object> deleteRealEstateById(@PathVariable Integer id) {
         try {
             return new ResponseEntity<>(service.deleteRealEstateById(id), HttpStatus.OK);
