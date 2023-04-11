@@ -7,7 +7,7 @@ import lombok.*;
 @ToString
 @Setter
 @Getter
-public class RealEstatePayload {
+public class RealEstateDto {
     private String imgUrl;
     private String imgAlt;
     private Integer bedrooms;

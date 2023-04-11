@@ -2,7 +2,7 @@ package com.ssst.homefinderbackend.controller;
 
 import com.ssst.homefinderbackend.data.entity.RealEstateEntity;
 import com.ssst.homefinderbackend.model.ErrorObject;
-import com.ssst.homefinderbackend.model.RealEstatePayload;
+import com.ssst.homefinderbackend.model.RealEstateDto;
 import com.ssst.homefinderbackend.service.RealEstateBusinessService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class RealEstateController {
     }
 
     @PostMapping("")
-    ResponseEntity<Object> createRealEstate(@RequestBody RealEstatePayload realEstate) {
+    ResponseEntity<Object> createRealEstate(@RequestBody RealEstateDto realEstate) {
         log.info("createRealEstate() called");
         try {
             return new ResponseEntity<>(realEstateBusinessService.createRealEstate(realEstate), HttpStatus.OK);
@@ -47,7 +47,7 @@ public class RealEstateController {
 
     @PutMapping("/{id}")
     ResponseEntity<Object> updateRealEstateById(@PathVariable Integer id,
-                                                @RequestBody RealEstatePayload realEstate) {
+                                                @RequestBody RealEstateDto realEstate) {
         log.info("updateRealEstateById() called");
         try {
             return new ResponseEntity<>(realEstateBusinessService.updateRealEstateById(id, realEstate), HttpStatus.OK);
