@@ -2,7 +2,7 @@ package com.ssst.homefinderbackend.service;
 
 import com.ssst.homefinderbackend.data.entity.RealEstateEntity;
 import com.ssst.homefinderbackend.data.service.RealEstateService;
-import com.ssst.homefinderbackend.model.RealEstatePayload;
+import com.ssst.homefinderbackend.model.RealEstateDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ public class RealEstateBusinessService {
         return service.getRealEstateById(id);
     }
 
-    public RealEstateEntity validatePayloadAndReturnEntity(Integer realEstateId, RealEstatePayload realEstate) throws Exception {
+    public RealEstateEntity validatePayloadAndReturnEntity(Integer realEstateId, RealEstateDto realEstate) throws Exception {
         Objects.requireNonNull(realEstate.getImgUrl(), "Image Url is required");
         if (realEstate.getImgUrl().isEmpty()){
             log.info("Image url is required!");
@@ -102,7 +102,7 @@ public class RealEstateBusinessService {
         return realEstateDb;
     }
 
-    public RealEstateEntity createRealEstate(RealEstatePayload realEstate) throws Exception {
+    public RealEstateEntity createRealEstate(RealEstateDto realEstate) throws Exception {
         log.info("createRealEstate() called with data {}: ", realEstate);
 
         RealEstateEntity realEstateDb = this.validatePayloadAndReturnEntity(null, realEstate);
@@ -112,7 +112,7 @@ public class RealEstateBusinessService {
         return service.getRealEstateById(createdRealEstate.getId());
     }
 
-    public RealEstateEntity updateRealEstateById(Integer realEstateId, RealEstatePayload realEstate) throws Exception {
+    public RealEstateEntity updateRealEstateById(Integer realEstateId, RealEstateDto realEstate) throws Exception {
         log.info("updateInstanceById() called with id: {}", realEstateId);
 
         RealEstateEntity realEstateDb = this.validatePayloadAndReturnEntity(realEstateId, realEstate);
