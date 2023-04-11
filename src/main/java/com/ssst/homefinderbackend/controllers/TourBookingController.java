@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RequestMapping("/book-tour")
+@RequestMapping("/api/tour")
 @RestController
 public class TourBookingController {
     private final TourBookingService tourBookingService;
