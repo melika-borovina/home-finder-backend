@@ -44,7 +44,7 @@ public class RealEstateEntity {
     private String address;
 
     @Column(name = "avg_rating", nullable = false)
-    private Double avgRating;
+    private Integer avgRating;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
