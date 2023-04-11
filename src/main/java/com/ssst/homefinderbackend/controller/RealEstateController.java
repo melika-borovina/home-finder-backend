@@ -17,19 +17,19 @@ import java.util.List;
 @Slf4j
 public class RealEstateController {
     @Autowired
-    RealEstateBusinessService service;
+    RealEstateBusinessService realEstateBusinessService;
 
     @GetMapping("")
     ResponseEntity<List<RealEstateEntity>> getRealEstateList() {
         log.info("getRealEstateList() called");
-        return new ResponseEntity<>(service.getRealEstateList(), HttpStatus.OK);
+        return new ResponseEntity<>(realEstateBusinessService.getRealEstateList(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     ResponseEntity<Object> getRealEstateById(@PathVariable Integer id) {
         log.info("getRealEstateById() called");
         try {
-            return new ResponseEntity<>(service.getRealEstateById(id), HttpStatus.OK);
+            return new ResponseEntity<>(realEstateBusinessService.getRealEstateById(id), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(new ErrorObject(404, e.getLocalizedMessage()), HttpStatus.NOT_FOUND);
         }
@@ -39,7 +39,7 @@ public class RealEstateController {
     ResponseEntity<Object> createRealEstate(@RequestBody RealEstatePayload realEstate) {
         log.info("createRealEstate() called");
         try {
-            return new ResponseEntity<>(service.createRealEstate(realEstate), HttpStatus.OK);
+            return new ResponseEntity<>(realEstateBusinessService.createRealEstate(realEstate), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(new ErrorObject(100, e.getLocalizedMessage()), HttpStatus.BAD_REQUEST);
         }
@@ -50,7 +50,7 @@ public class RealEstateController {
                                                 @RequestBody RealEstatePayload realEstate) {
         log.info("updateRealEstateById() called");
         try {
-            return new ResponseEntity<>(service.updateRealEstateById(id, realEstate), HttpStatus.OK);
+            return new ResponseEntity<>(realEstateBusinessService.updateRealEstateById(id, realEstate), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(new ErrorObject(100, e.getLocalizedMessage()), HttpStatus.BAD_REQUEST);
         }
@@ -58,7 +58,7 @@ public class RealEstateController {
     @DeleteMapping("/{id}")
     ResponseEntity<Object> deleteRealEstateById(@PathVariable Integer id) {
         try {
-            return new ResponseEntity<>(service.deleteRealEstateById(id), HttpStatus.OK);
+            return new ResponseEntity<>(realEstateBusinessService.deleteRealEstateById(id), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(new ErrorObject(500, e.getLocalizedMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
