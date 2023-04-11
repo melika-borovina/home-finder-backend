@@ -16,6 +16,6 @@ public class RealEstatePayload {
     private Double price;
     private Double size;
     private String address;
-    private Integer avgRating;
+    private Double avgRating;
 
 }
