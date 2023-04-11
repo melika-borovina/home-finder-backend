@@ -46,16 +46,6 @@ public class ReviewService {
                 .collect(Collectors.toList());
     }
 
-    public ReviewDto getReview(long id) {
-        return new ReviewDto(id, "Perfffff", "Love it, Barbie dream house", 5,1L, 1L);
-    }
-
-    public ReviewDto updateReview(long id, ReviewDto review) {
-        System.out.println("Review found for given id: " + id);
-        review.setId(id);
-        review.setTitle("Ewww,I hated it");
-        return review;
-    }
 
     public void deleteReview(long id) {
         System.out.println("Deleted " + id);

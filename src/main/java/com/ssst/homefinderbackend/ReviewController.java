@@ -28,19 +28,9 @@ public class ReviewController {
         return reviewService.getReviewsByUserId(userId);
     }
 
-    @GetMapping("/{id}")
-    public ReviewDto getReview(@PathVariable long id) {
-        return reviewService.getReview(id);
-    }
-
     @PostMapping
     public ReviewDto createReview(@RequestBody ReviewDto review) {
         return reviewService.createReview(review);
-    }
-
-    @PutMapping("/{id}")
-    public ReviewDto updateReview(@PathVariable long id, @RequestBody ReviewDto review) {
-        return reviewService.updateReview(id, review);
     }
 
     @DeleteMapping("/{id}")
