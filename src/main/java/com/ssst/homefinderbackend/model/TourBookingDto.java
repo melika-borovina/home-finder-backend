@@ -1,4 +1,4 @@
-package com.ssst.homefinderbackend.models;
+package com.ssst.homefinderbackend.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

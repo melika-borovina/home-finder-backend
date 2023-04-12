@@ -1,6 +1,6 @@
-package com.ssst.homefinderbackend.services;
+package com.ssst.homefinderbackend.service;
 
-import com.ssst.homefinderbackend.models.TourBookingDto;
+import com.ssst.homefinderbackend.model.TourBookingDto;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
