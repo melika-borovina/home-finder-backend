@@ -1,4 +1,4 @@
-package com.ssst.homefinderbackend.model;
+package com.ssst.homefinderbackend.model.enums;
 
 public enum CustomerSupportMessageType {
     ACCOUNT_SUPPORT,
