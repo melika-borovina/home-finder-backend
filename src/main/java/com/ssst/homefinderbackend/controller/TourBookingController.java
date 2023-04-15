@@ -28,12 +28,12 @@ public class TourBookingController {
     }
 
     @GetMapping("/list/real-estate/{realEstateId}")
-    public List<TourBookingDto> getTourBookingByRealEstateId(@PathVariable long realEstateId) {
+    public List<TourBookingDto> getTourBookingByRealEstateId(@PathVariable Integer realEstateId) {
         return tourBookingService.getTourBookingByRealEstateId(realEstateId);
     }
 
     @GetMapping("/{id}")
-    public TourBookingDto getTourBooking(@PathVariable long id) {
+    public TourBookingDto getTourBooking(@PathVariable Integer id) {
         return tourBookingService.getTourBooking(id);
     }
 
@@ -43,12 +43,12 @@ public class TourBookingController {
     }
 
     @PutMapping("/{id}")
-    public TourBookingDto updateTourBooking(@PathVariable long id, @RequestBody TourBookingDto tourBooking) {
+    public TourBookingDto updateTourBooking(@PathVariable Integer id, @RequestBody TourBookingDto tourBooking) {
         return tourBookingService.updateTourBooking(id, tourBooking);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteTourBooking(@PathVariable long id) {
+    public void deleteTourBooking(@PathVariable Integer id) {
         tourBookingService.deleteTourBooking(id);
     }
 }

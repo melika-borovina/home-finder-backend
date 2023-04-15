@@ -11,11 +11,11 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 public class TourBookingDto {
-    private Long id;
+    private Integer id;
     private String name;
     private Date preferredDate;
     private LocalTime preferredTime;
     private String contactInfo;
-    private Long realEstateId;
+    private Integer realEstateId;
 
 }
