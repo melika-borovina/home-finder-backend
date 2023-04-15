@@ -33,7 +33,7 @@ public class ArticleController {
     }
 
     @PostMapping
-    public ArticleDto createTourBooking(@RequestBody ArticleDto article) {
+    public ArticleDto createArticle(@RequestBody ArticleDto article) {
         return articleService.createArticle(article);
     }
 
