@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -45,6 +46,10 @@ public class RealEstateEntity {
 
     @Column(name = "avg_rating", nullable = false)
     private Double avgRating;
+
+    @ManyToMany
+    @JoinColumn(name = "feature_id", referencedColumnName = "id")
+    private List<FeatureEntity> features;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
