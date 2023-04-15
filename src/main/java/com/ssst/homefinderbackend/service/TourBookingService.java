@@ -35,7 +35,7 @@ public class TourBookingService {
         results.add(x);
         results.add(y);
         return results.stream()
-                .filter(result -> result.getRealEstateId() == realEstateId)
+                .filter(result -> result.getRealEstateId().equals(realEstateId))
                 .collect(Collectors.toList());
     }
 
