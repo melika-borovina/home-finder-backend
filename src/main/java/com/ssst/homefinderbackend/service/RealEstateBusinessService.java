@@ -1,12 +1,15 @@
 package com.ssst.homefinderbackend.service;
 
+import com.ssst.homefinderbackend.data.entity.FeatureEntity;
 import com.ssst.homefinderbackend.data.entity.RealEstateEntity;
+import com.ssst.homefinderbackend.data.service.FeatureService;
 import com.ssst.homefinderbackend.data.service.RealEstateService;
 import com.ssst.homefinderbackend.model.RealEstateDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,6 +18,9 @@ import java.util.Objects;
 public class RealEstateBusinessService {
     @Autowired
     RealEstateService service;
+
+    @Autowired
+    FeatureService featureService;
 
     public List<RealEstateEntity> getRealEstateList() {
         log.info("getRealEstateList() called");
@@ -83,6 +89,18 @@ public class RealEstateBusinessService {
             }
         }
 
+        List<FeatureEntity> featureEntities = new ArrayList<>();
+        if (realEstate.getFeatures() != null) {
+            for (Integer featureId : realEstate.getFeatures()) {
+                FeatureEntity featureEntity = featureService.getFeatureById(featureId);
+                if (featureEntity == null) {
+                    log.info("Feature with id {} does not exist.", featureId);
+                    throw new Exception(String.format("Could not find Feature with id '%s'", featureId));
+                }
+                featureEntities.add(featureEntity);
+            }
+        }
+
         RealEstateEntity realEstateDb = new RealEstateEntity();
         // in case of insert realEstateId will be created on repository level
         if (realEstateId != null) {
@@ -98,6 +116,7 @@ public class RealEstateBusinessService {
         realEstateDb.setSize(realEstate.getSize());
         realEstateDb.setAddress(realEstate.getAddress());
         realEstateDb.setAvgRating(realEstate.getAvgRating());
+        realEstateDb.setFeatures(featureEntities);
 
         return realEstateDb;
     }

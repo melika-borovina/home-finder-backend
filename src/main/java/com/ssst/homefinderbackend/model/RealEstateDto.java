@@ -2,6 +2,8 @@ package com.ssst.homefinderbackend.model;
 
 import lombok.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
@@ -17,5 +19,6 @@ public class RealEstateDto {
     private Double size;
     private String address;
     private Double avgRating;
+    private List<Integer> features;
 
 }

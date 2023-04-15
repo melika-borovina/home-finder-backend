@@ -20,13 +20,13 @@ public class RealEstateService {
     }
 
     public List<RealEstateEntity> getRealEstateList() {
-        log.info("getCurrency() called");
+        log.info("getRealEstate() called");
         return repository.findAll();
     }
 
 
     public RealEstateEntity getRealEstateById(Integer realEstateId) throws Exception {
-        log.info("getRealEstateById called with currencyId " + realEstateId);
+        log.info("getRealEstateById called with realEstateId " + realEstateId);
         Optional<RealEstateEntity> result = repository.findById(realEstateId);
         if (result.isPresent()) {
             return result.get();
