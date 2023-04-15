@@ -1,4 +1,4 @@
-package com.ssst.homefinderbackend;
+package com.ssst.homefinderbackend.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,10 +8,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class ReviewDto {
-    private Long id;
+    private Integer id;
     private String title;
     private String description;
     private Integer rating;
-    private Long realEstateId;
-    private Long userId;
+    private Integer realEstateId;
+    private Integer userId;
 }
