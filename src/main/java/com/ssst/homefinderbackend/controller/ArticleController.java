@@ -1,7 +1,11 @@
 package com.ssst.homefinderbackend.controller;
 
+import com.ssst.homefinderbackend.data.entity.ArticleEntity;
 import com.ssst.homefinderbackend.model.ArticleDto;
+import com.ssst.homefinderbackend.model.ErrorObject;
 import com.ssst.homefinderbackend.service.ArticleService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,27 +27,44 @@ public class ArticleController {
     }
 
     @GetMapping("/list")
-    public List<ArticleDto> getArticles() {
-        return articleService.getArticles();
+    ResponseEntity<List<ArticleEntity>> getArticlesList() {
+        return new ResponseEntity<>(this.articleService.getArticleList(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ArticleDto getArticle(@PathVariable Integer id) {
-        return articleService.getArticle(id);
+    ResponseEntity<Object> getArticle(@PathVariable Integer id) {
+        try {
+            return new ResponseEntity<>(this.articleService.getArticle(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ErrorObject(404, e.getLocalizedMessage()), HttpStatus.NOT_FOUND);
+        }
     }
 
-    @PostMapping
-    public ArticleDto createArticle(@RequestBody ArticleDto article) {
-        return articleService.createArticle(article);
+    @PostMapping("")
+    ResponseEntity<Object> createArticle(@RequestBody ArticleDto article) {
+        try {
+            return new ResponseEntity<>(this.articleService.createArticle(article), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ErrorObject(100, e.getLocalizedMessage()), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("/{id}")
-    public ArticleDto updateArticle(@PathVariable Integer id, @RequestBody ArticleDto article) {
-        return articleService.updateArticle(id, article);
+    ResponseEntity<Object> updateArticle(@PathVariable Integer id, @RequestBody ArticleDto article) {
+        try {
+            return new ResponseEntity<>(this.articleService.updateArticle(id, article), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ErrorObject(100, e.getLocalizedMessage()), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping("/{id}")
-    public void deleteArticle(@PathVariable Integer id) {
-        articleService.deleteArticle(id);
+    ResponseEntity<Object> deleteArticle(@PathVariable Integer id) {
+        try {
+            return new ResponseEntity<>(this.articleService.deleteArticle(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ErrorObject(500, e.getLocalizedMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 }

@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
+@Table(name="real_estates")
 @Getter
 @Setter
 @AllArgsConstructor

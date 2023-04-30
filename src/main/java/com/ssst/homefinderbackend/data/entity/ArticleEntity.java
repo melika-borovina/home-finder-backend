@@ -6,32 +6,40 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
-@Table(name="features")
+@Table(name="articles")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class FeatureEntity {
+public class ArticleEntity {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false, nullable = false)
+    @Column(name = "id", updatable = false, nullable = false, unique = true)
     private Integer id;
 
-    @Column(name = "name", nullable = false, unique = true)
-    private String name;
+    @Column(name = "title", nullable = false)
+    private String title;
 
-    @Column(name = "icon", nullable = false, unique = true)
-    private String icon;
+    @Column(name = "content", nullable = false)
+    private String content;
+
+    @Column(name = "imageURL", nullable = false)
+    private String imageURL;
+
+    @Column(name = "author_name", nullable = false)
+    private String author_name;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
+    private LocalTime createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
 
 }
