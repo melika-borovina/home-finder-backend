@@ -47,7 +47,7 @@ public class RealEstateEntity {
     @Column(name = "avg_rating", nullable = false)
     private Double avgRating;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "feature_id", referencedColumnName = "id")
     private List<FeatureEntity> features;
 
