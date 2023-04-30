@@ -1,56 +1,62 @@
 package com.ssst.homefinderbackend.service;
 
+import com.ssst.homefinderbackend.data.entity.RealEstateEntity;
+import com.ssst.homefinderbackend.data.entity.TourBookingEntity;
+import com.ssst.homefinderbackend.data.repository.TourBookingRepo;
 import com.ssst.homefinderbackend.model.TourBookingDto;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class TourBookingService {
 
-    public TourBookingDto createTourBooking(TourBookingDto tourBooking) {
-        tourBooking.setId(91);
-        tourBooking.setName("Samantha Jones");
-        return tourBooking;
+    @Autowired
+    TourBookingRepo tourBookingRepo;
+
+    public TourBookingDto createTourBooking(TourBookingDto tourBookingDto) {
+        TourBookingEntity tourBookingEntity = new TourBookingEntity();
+
+        tourBookingEntity.setUsername(tourBookingDto.getUsername());
+        tourBookingEntity.setPreferredDate(tourBookingDto.getPreferredDate());
+        tourBookingEntity.setContactInfo(tourBookingDto.getContactInfo());
+        RealEstateEntity realEstateEntity = new RealEstateEntity();
+        realEstateEntity.setId(tourBookingDto.getRealEstateId());
+        tourBookingEntity.setRealEstateId(realEstateEntity);
+
+        tourBookingEntity = tourBookingRepo.save(tourBookingEntity);
+        tourBookingDto.setId(tourBookingEntity.getId());
+
+        return tourBookingDto;
     }
 
-    public List<TourBookingDto> getTourBookingList() {
-        List<TourBookingDto> result = new ArrayList<>();
-        TourBookingDto x = new TourBookingDto(42, "John Smith", new Date(), LocalTime.of(2, 22),"john@smith.com", 1);
-        TourBookingDto y = new TourBookingDto(103, "Lindsay Lohan",  new Date(),LocalTime.of(11, 11),"lindsay@lohan.com", 3);
-        result.add(x);
-        result.add(y);
-
-        return result;
+    public TourBookingEntity getTourBooking(Integer id) {
+        return tourBookingRepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Tour booking with id " + id + " not found"));
     }
 
-    public List<TourBookingDto> getTourBookingByRealEstateId(Integer realEstateId) {
-        List<TourBookingDto> results = new ArrayList<>();
-        TourBookingDto x = new TourBookingDto(42, "John Smith", new Date(), LocalTime.of(2, 22),"john@smith.com", 111);
-        TourBookingDto y = new TourBookingDto(103, "Lindsay Lohan",  new Date(),LocalTime.of(11, 11),"lindsay@lohan.com", 111);
-        results.add(x);
-        results.add(y);
-        return results.stream()
-                .filter(result -> result.getRealEstateId().equals(realEstateId))
+    public List<TourBookingDto> getTourBookings() {
+        List<TourBookingEntity> tourBookingEntities = tourBookingRepo.findAll();
+        return tourBookingEntities.stream()
+                .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
-    public TourBookingDto getTourBooking(Integer id) {
-        return new TourBookingDto(id,"John Smith", new Date(),LocalTime.of(2, 22),"john@smith.com", 1 );
-    }
-
-    public TourBookingDto updateTourBooking(Integer id, TourBookingDto tourBooking) {
-        System.out.println("Tour Booking found for given id: " + id);
-        tourBooking.setId(id);
-        tourBooking.setName("Sam Jones");
-        return tourBooking;
-    }
-
     public void deleteTourBooking(Integer id) {
-        System.out.println("Deleted " + id);
+        tourBookingRepo.deleteById(id);
+    }
+
+    private TourBookingDto convertToDto(TourBookingEntity tourBookingEntity) {
+        TourBookingDto tourBookingDto = new TourBookingDto();
+        tourBookingDto.setId(tourBookingEntity.getId());
+        tourBookingDto.setUsername(tourBookingEntity.getUsername());
+        tourBookingDto.setPreferredDate(tourBookingEntity.getPreferredDate());
+        tourBookingDto.setContactInfo(tourBookingEntity.getContactInfo());
+        tourBookingDto.setRealEstateId(tourBookingEntity.getRealEstateId().getId());
+
+        return tourBookingDto;
     }
 }
