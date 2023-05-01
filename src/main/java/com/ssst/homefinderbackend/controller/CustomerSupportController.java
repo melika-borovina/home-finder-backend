@@ -1,5 +1,6 @@
 package com.ssst.homefinderbackend.controller;
 
+import com.ssst.homefinderbackend.data.entity.CustomerSupportEntity;
 import com.ssst.homefinderbackend.data.entity.RealEstateEntity;
 import com.ssst.homefinderbackend.model.CustomerSupportRequestDto;
 import com.ssst.homefinderbackend.model.ErrorObject;
@@ -23,12 +24,12 @@ public class CustomerSupportController {
     private CustomerSupportService customerSupportService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<CustomerSupportRequestDto> getCustomerSupportRequestById(@PathVariable Integer id) {
-        CustomerSupportRequestDto customerSupportRequestDto = customerSupportService.getCustomerSupportRequestById(id);
-        if (customerSupportRequestDto == null) {
+    public ResponseEntity<CustomerSupportEntity> getCustomerSupportRequestById(@PathVariable Integer id) {
+        CustomerSupportEntity customerSupportRequest = customerSupportService.getCustomerSupportRequestById(id);
+        if (customerSupportRequest == null) {
             return ResponseEntity.notFound().build();
         } else {
-            return ResponseEntity.ok(customerSupportRequestDto);
+            return ResponseEntity.ok(customerSupportRequest);
         }
     }
 
@@ -39,9 +40,9 @@ public class CustomerSupportController {
     }
 
     @PostMapping
-    public ResponseEntity<CustomerSupportRequestDto> addCustomerSupportRequest(@RequestBody CustomerSupportRequestDto customerSupportRequestDto) {
-        customerSupportService.addCustomerSupportRequest(customerSupportRequestDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(customerSupportRequestDto);
+    public ResponseEntity<CustomerSupportEntity> addCustomerSupportRequest(@RequestBody CustomerSupportEntity customerSupportRequest) {
+        customerSupportService.addCustomerSupportRequest(customerSupportRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(customerSupportRequest);
     }
 
 
