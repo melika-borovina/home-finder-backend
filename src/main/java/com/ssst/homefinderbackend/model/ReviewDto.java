@@ -11,7 +11,5 @@ public class ReviewDto {
     private Integer id;
     private String title;
     private String description;
-    private Integer rating;
     private Integer realEstateId;
-    private Integer userId;
 }

@@ -1,14 +1,12 @@
 package com.ssst.homefinderbackend.controller;
 
+import com.ssst.homefinderbackend.data.entity.ReviewEntity;
+import com.ssst.homefinderbackend.model.ErrorObject;
 import com.ssst.homefinderbackend.model.ReviewDto;
 import com.ssst.homefinderbackend.service.ReviewService;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,27 +20,44 @@ public class ReviewController {
     }
 
     @GetMapping("/list")
-    public List<ReviewDto> getReviewList() {
-        return reviewService.getReviewList();
+    ResponseEntity<List<ReviewEntity>> getReviewList() {
+        return new ResponseEntity<>(this.reviewService.getReviewList(), HttpStatus.OK);
     }
 
-    @GetMapping("/list/real-estate/{realEstateId}")
-    public List<ReviewDto> getReviewsByRealEstateId(@PathVariable Integer realEstateId) {
-        return reviewService.getReviewsByRealEstateId(realEstateId);
+
+    @GetMapping("/{id}")
+    ResponseEntity<Object> getReview(@PathVariable Integer id) {
+        try {
+            return new ResponseEntity<>(this.reviewService.getReview(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ErrorObject(404, e.getLocalizedMessage()), HttpStatus.NOT_FOUND);
+        }
     }
 
-    @GetMapping("/list/user/{userId}")
-    public List<ReviewDto> getReviewsByUserId(@PathVariable Integer userId) {
-        return reviewService.getReviewsByUserId(userId);
+    @PostMapping("")
+    ResponseEntity<Object> createReview(@RequestBody ReviewDto review) {
+        try {
+            return new ResponseEntity<>(this.reviewService.createReview(review), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ErrorObject(100, e.getLocalizedMessage()), HttpStatus.BAD_REQUEST);
+        }
     }
 
-    @PostMapping
-    public ReviewDto createReview(@RequestBody ReviewDto review) {
-        return reviewService.createReview(review);
+    @PutMapping("/{id}")
+    ResponseEntity<Object> updateReview(@PathVariable Integer id, @RequestBody ReviewDto review) {
+        try {
+            return new ResponseEntity<>(this.reviewService.updateReview(id, review), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ErrorObject(100, e.getLocalizedMessage()), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping("/{id}")
-    public void deleteReview(@PathVariable Integer id) {
-        reviewService.deleteReview(id);
+    ResponseEntity<Object> deleteReview(@PathVariable Integer id) {
+        try {
+            return new ResponseEntity<>(this.reviewService.deleteReview(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ErrorObject(500, e.getLocalizedMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
