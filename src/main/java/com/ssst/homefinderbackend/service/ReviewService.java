@@ -1,54 +1,73 @@
 package com.ssst.homefinderbackend.service;
 
+import com.ssst.homefinderbackend.data.entity.ReviewEntity;
+import com.ssst.homefinderbackend.data.repository.ReviewRepo;
 import com.ssst.homefinderbackend.model.ReviewDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class ReviewService {
-    public ReviewDto createReview(ReviewDto review) {
-        review.setId(111);
-        review.setTitle("Perfect house!!! Love it !! ;Ppp");
-        return review;
+
+    @Autowired
+    ReviewRepo repository;
+
+    public ReviewEntity validatePayloadAndReturnEntity(Integer reviewId, ReviewDto review) throws Exception {
+        Objects.requireNonNull(review.getTitle(), "Review Title is required");
+        if (review.getTitle().isEmpty()){
+            throw new Exception("Review Title is required!");
+        }
+
+        if (reviewId != null) {
+            ReviewEntity reviewEntity = getReview(reviewId);
+            if (reviewEntity == null) {
+                throw new Exception(String.format("Could not find review with id '%s'", reviewId));
+            }
+        }
+
+        ReviewEntity reviewDb = new ReviewEntity();
+        if (reviewId != null) {
+            reviewDb.setId(reviewId);
+        }
+
+        reviewDb.setTitle(review.getTitle());
+        reviewDb.setDescription(review.getDescription());
+
+        return reviewDb;
     }
 
-    public List<ReviewDto> getReviewList() {
-        List<ReviewDto> result = new ArrayList<>();
-        ReviewDto x = new ReviewDto(222, "Perfffff", "Love it, Barbie dream house", 5,1, 1);
-        ReviewDto y = new ReviewDto(777, "Looks dirty",  "I wanted to like it, but it looks like cockroaches live here ;((",1,2, 4);
-        result.add(x);
-        result.add(y);
-
-        return result;
+    public ReviewEntity createReview(ReviewDto review) throws Exception {
+        ReviewEntity reviewDb = this.validatePayloadAndReturnEntity(null, review);
+        ReviewEntity createdReview = repository.save(reviewDb);
+        return getReview(createdReview.getId());
     }
 
-    public List<ReviewDto> getReviewsByRealEstateId(Integer realEstateId) {
-        List<ReviewDto> results = new ArrayList<>();
-        ReviewDto x = new ReviewDto(222, "Perfffff", "Love it, Barbie dream house", 5,333, 1);
-        ReviewDto y = new ReviewDto(777, "Looks dirty",  "I wanted to like it, but it looks like cockroaches live here ;((",1,333, 4);
-        results.add(x);
-        results.add(y);
-        return results.stream()
-                .filter(result -> result.getRealEstateId().equals(realEstateId))
-                .collect(Collectors.toList());
+    public List<ReviewEntity> getReviewList() {
+        return repository.findAll();
     }
 
-    public List<ReviewDto> getReviewsByUserId(Integer userId) {
-        List<ReviewDto> results = new ArrayList<>();
-        ReviewDto x = new ReviewDto(222, "Perfffff", "Love it, Barbie dream house", 5,23, 111);
-        ReviewDto y = new ReviewDto(777, "Looks dirty",  "I wanted to like it, but it looks like cockroaches live here ;((",1,44, 111);
-        results.add(x);
-        results.add(y);
-        return results.stream()
-                .filter(result -> result.getUserId().equals(userId))
-                .collect(Collectors.toList());
+    public ReviewEntity getReview(Integer reviewId) throws Exception  {
+        Optional<ReviewEntity> result = repository.findById(reviewId);
+        if (result.isPresent()) {
+            return result.get();
+        } else {
+            throw new Exception(String.format("Could not find review with id %s", reviewId));
+        }
     }
 
+    public ReviewEntity updateReview(Integer articleId, ReviewDto review) throws Exception {
+        ReviewEntity reviewDb = this.validatePayloadAndReturnEntity(articleId, review);
+        ReviewEntity createdReview = repository.save(reviewDb);
+        return getReview(createdReview.getId());
+    }
 
-    public void deleteReview(Integer id) {
-        System.out.println("Deleted " + id);
+    public Integer deleteReview(Integer reviewId) throws Exception {
+        this.getReview(reviewId);
+        repository.deleteById(reviewId);
+        return 1;
     }
 }
