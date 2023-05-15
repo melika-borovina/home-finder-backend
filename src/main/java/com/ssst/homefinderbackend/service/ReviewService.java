@@ -3,7 +3,6 @@ package com.ssst.homefinderbackend.service;
 import com.ssst.homefinderbackend.data.entity.ReviewEntity;
 import com.ssst.homefinderbackend.data.repository.ReviewRepo;
 import com.ssst.homefinderbackend.model.ReviewDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,14 +12,14 @@ import java.util.Optional;
 @Service
 public class ReviewService {
 
-    @Autowired
-    ReviewRepo repository;
+    private final ReviewRepo repository;
+
+    public ReviewService(ReviewRepo reviewRepository) {
+      this.repository=reviewRepository;
+    }
 
     public ReviewEntity validatePayloadAndReturnEntity(Integer reviewId, ReviewDto review) throws Exception {
         Objects.requireNonNull(review.getTitle(), "Review Title is required");
-        if (review.getTitle().isEmpty()){
-            throw new Exception("Review Title is required!");
-        }
 
         if (reviewId != null) {
             ReviewEntity reviewEntity = getReview(reviewId);
@@ -43,7 +42,7 @@ public class ReviewService {
     public ReviewEntity createReview(ReviewDto review) throws Exception {
         ReviewEntity reviewDb = this.validatePayloadAndReturnEntity(null, review);
         ReviewEntity createdReview = repository.save(reviewDb);
-        return getReview(createdReview.getId());
+        return createdReview;
     }
 
     public List<ReviewEntity> getReviewList() {
@@ -65,8 +64,7 @@ public class ReviewService {
         return getReview(createdReview.getId());
     }
 
-    public Integer deleteReview(Integer reviewId) throws Exception {
-        this.getReview(reviewId);
+    public Integer deleteReview(Integer reviewId) {
         repository.deleteById(reviewId);
         return 1;
     }
