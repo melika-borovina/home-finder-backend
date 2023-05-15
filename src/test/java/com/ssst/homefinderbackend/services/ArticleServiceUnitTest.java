@@ -144,11 +144,11 @@ public class ArticleServiceUnitTest {
     public void givenInvalidId_whenUpdate_thenExceptionShouldBeThrown() {
         assertThatThrownBy(() -> articleService.updateArticle(404, ArticlesTest.articleDto3()))
                 .isInstanceOf(Exception.class)
-                .hasMessageContaining("Could not find feature with id");
+                .hasMessageContaining("Could not find article with id");
     }
 
     @Test
-    public void givenMilestone_whenDelete_thenRepositoryCalled() {
+    public void givenArticle_whenDelete_thenRepositoryCalled() {
         // arrange
         Integer id = 123;
 

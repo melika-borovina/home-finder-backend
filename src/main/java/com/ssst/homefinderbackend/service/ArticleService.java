@@ -63,7 +63,7 @@ public class ArticleService {
         if (result.isPresent()) {
             return result.get();
         } else {
-            throw new Exception(String.format("Could not find feature with id %s", articleId));
+            throw new Exception(String.format("Could not find article with id %s", articleId));
         }
     }
 
