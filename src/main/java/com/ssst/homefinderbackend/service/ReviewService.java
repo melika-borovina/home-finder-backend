@@ -20,9 +20,6 @@ public class ReviewService {
 
     public ReviewEntity validatePayloadAndReturnEntity(Integer reviewId, ReviewDto review) throws Exception {
         Objects.requireNonNull(review.getTitle(), "Review Title is required");
-        if (review.getTitle().isEmpty()){
-            throw new Exception("Review Title is required!");
-        }
 
         if (reviewId != null) {
             ReviewEntity reviewEntity = getReview(reviewId);
