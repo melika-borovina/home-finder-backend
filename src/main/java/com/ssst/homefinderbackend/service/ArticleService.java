@@ -12,14 +12,16 @@ import java.util.Optional;
 @Service
 public class ArticleService {
 
+
     @Autowired
-    ArticleRepo repository;
+    ArticleRepo articleRepository;
+
+    public ArticleService(ArticleRepo articleRepository) {
+        this.articleRepository = articleRepository;
+    }
 
     public ArticleEntity validatePayloadAndReturnEntity(Integer articleId, ArticleDto article) throws Exception {
         Objects.requireNonNull(article.getTitle(), "Article Title is required");
-        if (article.getTitle().isEmpty()){
-            throw new Exception("Article Title is required!");
-        }
 
         if (articleId != null) {
             ArticleEntity articleEntity = getArticle(articleId);
@@ -45,19 +47,19 @@ public class ArticleService {
 
         ArticleEntity articleDb = this.validatePayloadAndReturnEntity(null, article);
 
-        ArticleEntity createdArticle = repository.save(articleDb);
+        ArticleEntity createdArticle = articleRepository.save(articleDb);
 
-        return getArticle(createdArticle.getId());
+        return createdArticle;
 
     }
 
     public List<ArticleEntity> getArticleList() {
-        return repository.findAll();
+        return articleRepository.findAll();
     }
 
 
     public ArticleEntity getArticle(Integer articleId) throws Exception  {
-        Optional<ArticleEntity> result = repository.findById(articleId);
+        Optional<ArticleEntity> result = articleRepository.findById(articleId);
         if (result.isPresent()) {
             return result.get();
         } else {
@@ -69,14 +71,12 @@ public class ArticleService {
 
         ArticleEntity articleDb = this.validatePayloadAndReturnEntity(articleId, article);
 
-        ArticleEntity createdArticle = repository.save(articleDb);
+        ArticleEntity createdArticle = articleRepository.save(articleDb);
 
         return getArticle(createdArticle.getId());
     }
-    public Integer deleteArticle(Integer articleId) throws Exception {
-        this.getArticle(articleId);
-
-        repository.deleteById(articleId);
+    public Integer deleteArticle(Integer articleId)  {
+        articleRepository.deleteById(articleId);
         return 1;
     }
 }
