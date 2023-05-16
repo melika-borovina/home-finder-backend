@@ -15,4 +15,8 @@ public class CustomerSupportRequestDto {
     private String phoneNumber;
     private CustomerSupportMessageType customerSupportMessageType;
     private String message;
+
+    public CustomerSupportRequestDto() {
+
+    }
 }
