@@ -17,9 +17,10 @@ import java.util.Map;
 public class CustomerSupportService {
 
     @Autowired
+    public
     CustomerSupportRepo customerSupportRepo;
 
-    private Map<Integer, CustomerSupportRequestDto> customerSupportRequests = new HashMap<>();
+    public Map<Integer, CustomerSupportRequestDto> customerSupportRequests = new HashMap<>();
     private int idCounter = 0;
 
     public CustomerSupportEntity getCustomerSupportRequestById(Integer id) {
@@ -35,7 +36,7 @@ public class CustomerSupportService {
 
     }
 
-    private int generateId(){
+    public int generateId(){
         return idCounter++;
     }
 
