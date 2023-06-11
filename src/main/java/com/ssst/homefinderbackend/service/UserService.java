@@ -1,44 +1,79 @@
 package com.ssst.homefinderbackend.service;
 
-import com.ssst.homefinderbackend.model.UserDto;
+import com.ssst.homefinderbackend.data.entity.RoleEntity;
+import com.ssst.homefinderbackend.data.entity.UserEntity;
+import com.ssst.homefinderbackend.data.repository.UserRepo;
+import com.ssst.homefinderbackend.model.SimpleUser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
-    public UserDto createUser(UserDto user) {
-        user.setId(1);
-        user.setName("Nejra");
-        user.setLast_name("Muzaferija");
-        user.setAge(21);
-        user.setOccupation("engineer");
-        return user;
+    @Autowired
+    private UserRepo userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    public UserEntity registerNewUser(UserEntity user) {
+        RoleEntity role = new RoleEntity();
+        role.setId(2); // Default role "user"
+
+        List<RoleEntity> roles = new ArrayList<>();
+        roles.add(role);
+
+        user.setRoles(roles);
+
+        String hashedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(hashedPassword);
+
+        return userRepository.save(user);
     }
 
-    public List<UserDto> getUsers() {
-        List<UserDto> result = new ArrayList<>();
-        UserDto x = new UserDto(2, "Bekir", 22,"hadziomerovic", "eng");
-        UserDto y = new UserDto(3, "Zakira",  21,"skaljic", "eng");
-        result.add(x);
-        result.add(y);
-        return result;
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserEntity user = userRepository.findOneByUsername(username);
+
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found with username: " + username);
+        }
+
+        List<String> roleNames = user.getRoles()
+                .stream()
+                .map(RoleEntity::getName)
+                .collect(Collectors.toList());
+
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(),
+                user.getPassword(),
+                getGrantedAuthorities(roleNames)
+        );
     }
 
-
-    public UserDto getUser(Integer id) {
-        return new UserDto(id,"Nejra",  21,"Muzaferija","eng");
+    private List<GrantedAuthority> getGrantedAuthorities(List<String> roles) {
+        return roles
+                .stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
     }
 
-    public UserDto updateUser(Integer id, UserDto user) {
-        user.setId(id);
-        user.setAge(30);
-        return user;
+    public SimpleUser getUserByUsername(String userName) {
+        getFullUserByUsername(userName); // user exists?
+        return new SimpleUser(userName);
     }
 
-    public void deleteUser(Integer id) {
-        System.out.println("Deleted " + id);
+    private UserEntity getFullUserByUsername(String userName) {
+        return userRepository.findOneByUsername(userName);
     }
 }
