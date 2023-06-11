@@ -1,20 +1,30 @@
 package com.ssst.homefinderbackend.service;
 
-
 import com.ssst.homefinderbackend.data.entity.RoleEntity;
 import com.ssst.homefinderbackend.data.entity.UserEntity;
 import com.ssst.homefinderbackend.data.repository.UserRepo;
+import com.ssst.homefinderbackend.model.SimpleUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     @Autowired
     private UserRepo userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public UserEntity registerNewUser(UserEntity user) {
         RoleEntity role = new RoleEntity();
@@ -24,7 +34,46 @@ public class UserService {
         roles.add(role);
 
         user.setRoles(roles);
+
+        String hashedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(hashedPassword);
+
         return userRepository.save(user);
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserEntity user = userRepository.findOneByUsername(username);
+
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found with username: " + username);
+        }
+
+        List<String> roleNames = user.getRoles()
+                .stream()
+                .map(RoleEntity::getName)
+                .collect(Collectors.toList());
+
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(),
+                user.getPassword(),
+                getGrantedAuthorities(roleNames)
+        );
+    }
+
+    private List<GrantedAuthority> getGrantedAuthorities(List<String> roles) {
+        return roles
+                .stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+    }
+
+    public SimpleUser getUserByUsername(String userName) {
+        getFullUserByUsername(userName); // user exists?
+        return new SimpleUser(userName);
+    }
+
+    private UserEntity getFullUserByUsername(String userName) {
+        return userRepository.findOneByUsername(userName);
+    }
 }
