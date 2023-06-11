@@ -30,10 +30,10 @@ public class ReviewTest {
     }
 
     public static ReviewDto reviewDto1() {
-        return new ReviewDto(id1, title1, description1, realestate1.getId());
+        return new ReviewDto(id1, title1, description1, realestate1);
     }
 
     public static ReviewDto reviewDto2() {
-        return new ReviewDto(3, "Loved it", "Loveeee", realestate1.getId());
+        return new ReviewDto(3, "Loved it", "Loveeee", realestate1);
     }
 }

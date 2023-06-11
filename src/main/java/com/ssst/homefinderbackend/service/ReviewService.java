@@ -35,6 +35,7 @@ public class ReviewService {
 
         reviewDb.setTitle(review.getTitle());
         reviewDb.setDescription(review.getDescription());
+        reviewDb.setRealEstateId(review.getRealEstateId());
 
         return reviewDb;
     }
