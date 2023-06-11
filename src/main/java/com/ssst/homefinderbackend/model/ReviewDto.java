@@ -1,5 +1,6 @@
 package com.ssst.homefinderbackend.model;
 
+import com.ssst.homefinderbackend.data.entity.RealEstateEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,5 +12,5 @@ public class ReviewDto {
     private Integer id;
     private String title;
     private String description;
-    private Integer realEstateId;
+    private RealEstateEntity realEstateId;
 }
