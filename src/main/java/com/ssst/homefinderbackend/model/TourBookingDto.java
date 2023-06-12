@@ -1,5 +1,6 @@
 package com.ssst.homefinderbackend.model;
 
+import com.ssst.homefinderbackend.data.entity.RealEstateEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,9 +15,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class TourBookingDto {
     private Integer id;
-    private String username;
     private LocalDateTime preferredDate;
-    private String contactInfo;
-    private Integer realEstateId;
+    private String email;
+    private RealEstateEntity realEstateId;
 
 }

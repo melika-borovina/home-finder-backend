@@ -30,14 +30,12 @@ public class TourBookingEntity {
     @Column(name = "id", updatable = false, nullable = false)
     private Integer id;
 
-    @Column(name = "username", nullable = false)
-    private String username;
 
     @Column(name = "preferred_date", nullable = false)
     private LocalDateTime preferredDate;
 
-    @Column(name = "contact_info", nullable = false, unique = true)
-    private String contactInfo;
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
 
     @ManyToOne
     @JoinColumn(name = "real_estate_id",referencedColumnName = "id")
