@@ -39,6 +39,8 @@ public class ArticleService {
 
         articleDb.setTitle(article.getTitle());
         articleDb.setContent(article.getContent());
+        articleDb.setAuthor_name(article.getAuthor_name());
+        articleDb.setImageURL(article.getImageURL());
 
         return articleDb;
     }
