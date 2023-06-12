@@ -3,6 +3,7 @@ import com.ssst.homefinderbackend.filter.JwtRequestFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -26,6 +27,12 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests((authz) -> authz
                         // don't authenticate this particular request
                         .requestMatchers("/authenticate", "/api/user/register", "/api/user/{username}").permitAll()
+                        .requestMatchers("/authenticate",
+                                        "/api/real-estate/**",
+                                        "api/tour/list",
+                                        "api/tour",
+                                        "api/tour/**",
+                                        "/api/review/**").permitAll()
                         // all other requests need to be authenticated
                         .anyRequest().authenticated()
                 )
