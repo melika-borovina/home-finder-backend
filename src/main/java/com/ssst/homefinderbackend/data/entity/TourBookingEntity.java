@@ -34,7 +34,7 @@ public class TourBookingEntity {
     @Column(name = "preferred_date", nullable = false)
     private LocalDateTime preferredDate;
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "email", nullable = false )
     private String email;
 
     @ManyToOne
