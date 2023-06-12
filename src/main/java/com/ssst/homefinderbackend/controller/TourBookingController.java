@@ -49,7 +49,7 @@ public class TourBookingController {
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<Object> deleteReview(@PathVariable Integer id) {
+    ResponseEntity<Object> deleteTourBooking(@PathVariable Integer id) {
         try {
             return new ResponseEntity<>(this.tourBookingService.deleteTourBooking(id), HttpStatus.OK);
         } catch (Exception e) {
