@@ -9,5 +9,5 @@ import lombok.*;
 @Getter
 public class FeatureDto {
     String name;
-    String icon;
+
 }

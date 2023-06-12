@@ -45,16 +45,7 @@ public class FeatureService {
             throw new Exception(String.format("getFeatureByName(\"%s\") failed. Error: %s", name, e.getLocalizedMessage()));
         }
     }
-    public FeatureEntity getFeatureByIcon(String icon) throws Exception {
-        log.info("getFeatureByIcon called with icon {}", icon);
 
-        try {
-            return repository.findOneByIcon(icon);
-        } catch (Exception e) {
-            log.error("findOneByIcon {} failed.", icon, e);
-            throw new Exception(String.format("getFeatureByIcon(\"%s\") failed. Error: %s", icon, e.getLocalizedMessage()));
-        }
-    }
     public Integer deleteFeatureById(Integer featureId) throws Exception {
         // check whether id exists or not. If not, throw an exception
         this.getFeatureById(featureId);
