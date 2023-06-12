@@ -3,6 +3,7 @@ package com.ssst.homefinderbackend.data.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
@@ -45,7 +46,7 @@ public class RealEstateEntity {
     @Column(name = "address", nullable = false)
     private String address;
 
-    @Column(name = "avg_rating", nullable = false)
+    @Formula("(select avg(r.rating) from reviews r where r.real_estate_id = id)")
     private Double avgRating;
 
     @ManyToMany(fetch = FetchType.EAGER)

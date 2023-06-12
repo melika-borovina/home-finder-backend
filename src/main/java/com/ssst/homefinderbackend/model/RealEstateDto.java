@@ -18,7 +18,5 @@ public class RealEstateDto {
     private Double price;
     private Double size;
     private String address;
-    private Double avgRating;
     private List<Integer> features;
-
 }

@@ -23,9 +23,6 @@ public class FeatureEntity {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @Column(name = "icon", nullable = false, unique = true)
-    private String icon;
-
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
