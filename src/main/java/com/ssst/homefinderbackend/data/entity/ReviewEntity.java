@@ -20,6 +20,9 @@ public class ReviewEntity {
     @Column(name = "id", updatable = false, nullable = false)
     private Integer id;
 
+    @Column(name="rating", nullable = false)
+    private Double rating;
+
     @Column(name = "title", nullable = false)
     private String title;
 
