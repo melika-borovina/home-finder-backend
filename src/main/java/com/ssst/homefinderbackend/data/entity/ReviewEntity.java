@@ -29,7 +29,7 @@ public class ReviewEntity {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "real_estate_id",referencedColumnName = "id")
     private RealEstateEntity realEstateId;
 
