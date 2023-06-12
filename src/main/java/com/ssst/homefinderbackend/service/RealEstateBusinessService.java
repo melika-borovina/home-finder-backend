@@ -63,8 +63,6 @@ public class RealEstateBusinessService {
             throw new Exception("Address is required!");
         }
 
-        Objects.requireNonNull(realEstate.getAvgRating(), "Average rating is required");
-
 
         // validation
         // 1. update
@@ -115,7 +113,6 @@ public class RealEstateBusinessService {
         realEstateDb.setPrice(realEstate.getPrice());
         realEstateDb.setSize(realEstate.getSize());
         realEstateDb.setAddress(realEstate.getAddress());
-        realEstateDb.setAvgRating(realEstate.getAvgRating());
         realEstateDb.setFeatures(featureEntities);
 
         return realEstateDb;

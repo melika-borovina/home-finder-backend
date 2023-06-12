@@ -33,11 +33,6 @@ public class FeatureBusinessService {
             throw new Exception("Feature Name is required!");
         }
 
-        Objects.requireNonNull(feature.getIcon(), "Icon is required");
-        if (feature.getIcon().isEmpty()){
-            log.info("Icon is required!");
-            throw new Exception("Icon is required!");
-        }
 
         // validation
         // 1. update
@@ -54,21 +49,11 @@ public class FeatureBusinessService {
                     throw new Exception(String.format("Feature with name '%s' already exists. It is not possible to update it.", feature.getName()));
                 }
             }
-            if(!Objects.equals(featureEntity.getIcon(), feature.getIcon())) {
-                if (service.getFeatureByIcon(feature.getIcon()) != null){
-                    log.info("Feature with Icon {} already exists. It is not possible to update it.", feature.getIcon());
-                    throw new Exception(String.format("Feature with Icon '%s' already exists. It is not possible to update it.", feature.getIcon()));
-                }
-            }
         } else { // 2. insert
             // in a case of insert (featureId is null) check if name already exists
             if (service.getFeatureByName(feature.getName()) != null){
                 log.info("Feature with name {} already exists.", feature.getName());
                 throw new Exception(String.format("Feature with name '%s' already exists.", feature.getName()));
-            }
-            if (service.getFeatureByIcon(feature.getIcon()) != null){
-                log.info("Feature with Icon {} already exists.", feature.getIcon());
-                throw new Exception(String.format("Feature with Icon '%s' already exists.", feature.getIcon()));
             }
         }
 
@@ -79,7 +64,6 @@ public class FeatureBusinessService {
         }
 
         featureDb.setName(feature.getName());
-        featureDb.setIcon(feature.getIcon());
 
         return featureDb;
     }

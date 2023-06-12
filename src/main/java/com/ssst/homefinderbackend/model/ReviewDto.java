@@ -10,6 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ReviewDto {
     private Integer id;
+    private Double rating;
     private String title;
     private String description;
     private RealEstateEntity realEstateId;

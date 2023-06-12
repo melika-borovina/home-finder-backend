@@ -1,62 +1,67 @@
 package com.ssst.homefinderbackend.service;
 
-import com.ssst.homefinderbackend.data.entity.RealEstateEntity;
 import com.ssst.homefinderbackend.data.entity.TourBookingEntity;
 import com.ssst.homefinderbackend.data.repository.TourBookingRepo;
 import com.ssst.homefinderbackend.model.TourBookingDto;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class TourBookingService {
 
-    @Autowired
-    TourBookingRepo tourBookingRepo;
+    private final TourBookingRepo repository;
 
-    public TourBookingDto createTourBooking(TourBookingDto tourBookingDto) {
-        TourBookingEntity tourBookingEntity = new TourBookingEntity();
-
-        tourBookingEntity.setUsername(tourBookingDto.getUsername());
-        tourBookingEntity.setPreferredDate(tourBookingDto.getPreferredDate());
-        tourBookingEntity.setContactInfo(tourBookingDto.getContactInfo());
-        RealEstateEntity realEstateEntity = new RealEstateEntity();
-        realEstateEntity.setId(tourBookingDto.getRealEstateId());
-        tourBookingEntity.setRealEstateId(realEstateEntity);
-
-        tourBookingEntity = tourBookingRepo.save(tourBookingEntity);
-        tourBookingDto.setId(tourBookingEntity.getId());
-
-        return tourBookingDto;
+    public TourBookingService(TourBookingRepo tourBookingRepository) {
+        this.repository = tourBookingRepository;
     }
 
-    public TourBookingEntity getTourBooking(Integer id) {
-        return tourBookingRepo.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Tour booking with id " + id + " not found"));
+    public TourBookingEntity validatePayloadAndReturnEntity(Integer tourBookingId, TourBookingDto tourBooking) throws Exception {
+        Objects.requireNonNull(tourBooking.getEmail(), "Email is required");
+
+        if (tourBookingId != null) {
+            TourBookingEntity tourBookingEntity = getTourBooking(tourBookingId);
+            if (tourBookingEntity == null) {
+                throw new Exception(String.format("Could not find booking with id '%s'", tourBookingId));
+            }
+        }
+
+        TourBookingEntity tourBookingDb = new TourBookingEntity();
+        if (tourBookingId != null) {
+            tourBookingDb.setId(tourBookingId);
+        }
+
+        tourBookingDb.setEmail(tourBooking.getEmail());
+        tourBookingDb.setPreferredDate(tourBooking.getPreferredDate());
+        tourBookingDb.setRealEstateId(tourBooking.getRealEstateId());
+
+        return tourBookingDb;
     }
 
-    public List<TourBookingDto> getTourBookings() {
-        List<TourBookingEntity> tourBookingEntities = tourBookingRepo.findAll();
-        return tourBookingEntities.stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
+    public TourBookingEntity createTourBooking(TourBookingDto tourBooking) throws Exception {
+        TourBookingEntity tourBookingDb = this.validatePayloadAndReturnEntity(null, tourBooking);
+        TourBookingEntity createdTourBooking = repository.save(tourBookingDb);
+        return createdTourBooking;
     }
 
-    public void deleteTourBooking(Integer id) {
-        tourBookingRepo.deleteById(id);
+    public List<TourBookingEntity> getTourBookings() {
+        return repository.findAll();
     }
 
-    private TourBookingDto convertToDto(TourBookingEntity tourBookingEntity) {
-        TourBookingDto tourBookingDto = new TourBookingDto();
-        tourBookingDto.setId(tourBookingEntity.getId());
-        tourBookingDto.setUsername(tourBookingEntity.getUsername());
-        tourBookingDto.setPreferredDate(tourBookingEntity.getPreferredDate());
-        tourBookingDto.setContactInfo(tourBookingEntity.getContactInfo());
-        tourBookingDto.setRealEstateId(tourBookingEntity.getRealEstateId().getId());
-
-        return tourBookingDto;
+    public TourBookingEntity getTourBooking(Integer tourBookingId) throws Exception  {
+        Optional<TourBookingEntity> result = repository.findById(tourBookingId);
+        if (result.isPresent()) {
+            return result.get();
+        } else {
+            throw new Exception(String.format("Could not find booking with id %s", tourBookingId));
+        }
     }
+
+    public Integer deleteTourBooking(Integer tourBookingId) {
+        repository.deleteById(tourBookingId);
+        return 1;
+    }
+
 }

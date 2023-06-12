@@ -19,6 +19,7 @@ public class ReviewService {
     }
 
     public ReviewEntity validatePayloadAndReturnEntity(Integer reviewId, ReviewDto review) throws Exception {
+        Objects.requireNonNull(review.getRating(), "Review Rating is required");
         Objects.requireNonNull(review.getTitle(), "Review Title is required");
 
         if (reviewId != null) {
@@ -32,7 +33,7 @@ public class ReviewService {
         if (reviewId != null) {
             reviewDb.setId(reviewId);
         }
-
+        reviewDb.setRating(review.getRating());
         reviewDb.setTitle(review.getTitle());
         reviewDb.setDescription(review.getDescription());
         reviewDb.setRealEstateId(review.getRealEstateId());
