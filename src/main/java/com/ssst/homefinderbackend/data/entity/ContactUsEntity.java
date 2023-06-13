@@ -9,13 +9,13 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
-@Table(name="customerSupportComplaints")
+@Table(name="messages")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class CustomerSupportEntity {
+public class ContactUsEntity {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false, unique = true)
@@ -34,7 +34,7 @@ public class CustomerSupportEntity {
     private String phoneNumber;
 
     @Column(name = "messageType", nullable = false)
-    private String customerSupportMessageType;
+    private String contactUsMessageType;
 
     @Column(name = "message", nullable = false)
     private String message;
