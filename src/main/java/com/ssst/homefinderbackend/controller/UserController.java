@@ -3,8 +3,12 @@ package com.ssst.homefinderbackend.controller;
 import com.ssst.homefinderbackend.data.entity.UserEntity;
 import com.ssst.homefinderbackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequestMapping("/api/user")
 @RestController
@@ -22,6 +26,21 @@ public class UserController {
     public UserDetails getUserByUsername(@PathVariable("username") String username) {
         return userService.loadUserByUsername(username);
     }
+
+    @GetMapping("")
+    ResponseEntity<List<UserEntity>> getUsers() {
+        return new ResponseEntity<>(this.userService.getAllUsers(), HttpStatus.OK);
     }
+
+    @PutMapping("/{username}/role")
+    public UserEntity setUserRoleToOne(@PathVariable("username") String username) {
+        return userService.setUserRoleToAdmin(username);
+    }
+
+
+
+
+
+}
 
 

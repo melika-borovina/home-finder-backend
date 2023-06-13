@@ -29,22 +29,15 @@ public class WebSecurityConfig {
                         .requestMatchers("/authenticate",
                                 "/api/user/register",
                                 "/api/user/{username}",
-                                        "/api/real-estate/**",
-                                "/api/feature/**",
+                                "/api/real-estate",
                                 "/api/feature",
-                                        "/api/real-estate",
-                                        "api/tour/list", "api/tour",
-                                        "api/tour/**",
-                                        "/api/review/**",
+                                "api/tour",
+                                "/api/review",
                                 "/api/article/list",
                                 "/api/article/{id}",
                                 "/api/article",
                                 "/api/customer-support",
-                                "/api/customer-support/{id}",
-                                "/api/customer-support/list",
-                                "/api/contact-us",
-                                "/api/contact-us/list",
-                                "/api/contact-us/{id}").permitAll()
+                                "/api/contact-us").permitAll()
 
                         // all other requests need to be authenticated
                         .anyRequest().authenticated()

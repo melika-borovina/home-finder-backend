@@ -73,6 +73,29 @@ public class UserService implements UserDetailsService {
         return new SimpleUser(userName);
     }
 
+    public List<UserEntity> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public UserEntity setUserRoleToAdmin(String username) {
+        UserEntity user = userRepository.findOneByUsername(username);
+
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found with username: " + username);
+        }
+
+        RoleEntity role = new RoleEntity();
+        role.setId(1); // Set the role to 1
+
+        List<RoleEntity> roles = new ArrayList<>();
+        roles.add(role);
+
+        user.setRoles(roles);
+
+        return userRepository.save(user);
+    }
+
+
     private UserEntity getFullUserByUsername(String userName) {
         return userRepository.findOneByUsername(userName);
     }
