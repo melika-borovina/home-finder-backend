@@ -1,6 +1,5 @@
 package com.ssst.homefinderbackend.model;
 
-import com.ssst.homefinderbackend.model.enums.CustomerSupportMessageType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -13,7 +12,7 @@ public class CustomerSupportRequestDto {
     private String lastName;
     private String emailAddress;
     private String phoneNumber;
-    private CustomerSupportMessageType customerSupportMessageType;
+    private String customerSupportMessageType;
     private String message;
 
     public CustomerSupportRequestDto() {

@@ -1,48 +1,56 @@
 package com.ssst.homefinderbackend.controller;
 
 import com.ssst.homefinderbackend.data.entity.CustomerSupportEntity;
-import com.ssst.homefinderbackend.data.entity.RealEstateEntity;
 import com.ssst.homefinderbackend.model.CustomerSupportRequestDto;
 import com.ssst.homefinderbackend.model.ErrorObject;
-import com.ssst.homefinderbackend.model.RealEstateDto;
 import com.ssst.homefinderbackend.service.CustomerSupportService;
-import com.ssst.homefinderbackend.service.RealEstateBusinessService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/api/real-estate/customer-support")
 @RestController
-@Slf4j
+@RequestMapping("/api/customer-support")
 public class CustomerSupportController {
 
-    @Autowired
-    private CustomerSupportService customerSupportService;
+    private final CustomerSupportService customerService;
+
+    CustomerSupportController(CustomerSupportService customerService) {
+        this.customerService = customerService;
+    }
+
+    @GetMapping("/list")
+    ResponseEntity<List<CustomerSupportEntity>> getMessagesList() {
+        return new ResponseEntity<>(this.customerService.getMessageList(), HttpStatus.OK);
+    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CustomerSupportEntity> getCustomerSupportRequestById(@PathVariable Integer id) {
-        CustomerSupportEntity customerSupportRequest = customerSupportService.getCustomerSupportRequestById(id);
-        if (customerSupportRequest == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok(customerSupportRequest);
+    ResponseEntity<Object> getMessage(@PathVariable Integer id) {
+        try {
+            return new ResponseEntity<>(this.customerService.getMessage(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ErrorObject(404, e.getLocalizedMessage()), HttpStatus.NOT_FOUND);
         }
     }
 
-    @GetMapping
-    public ResponseEntity<List<CustomerSupportRequestDto>> getAllCustomerSupportRequests() {
-        List<CustomerSupportRequestDto> customerSupportRequestDtos = customerSupportService.getAllCustomerSupportRequests();
-        return ResponseEntity.ok(customerSupportRequestDtos);
+    @PostMapping("")
+    ResponseEntity<Object> createMessage(@RequestBody CustomerSupportRequestDto message) {
+        try {
+            return new ResponseEntity<>(this.customerService.createMessage(message), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ErrorObject(100, e.getLocalizedMessage()), HttpStatus.BAD_REQUEST);
+        }
     }
 
-    @PostMapping
-    public ResponseEntity<CustomerSupportEntity> addCustomerSupportRequest(@RequestBody CustomerSupportEntity customerSupportRequest) {
-        customerSupportService.addCustomerSupportRequest(customerSupportRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(customerSupportRequest);
+    @DeleteMapping("/{id}")
+    ResponseEntity<Object> deleteMessage(@PathVariable Integer id) {
+        try {
+            return new ResponseEntity<>(this.customerService.deleteMessage(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ErrorObject(500, e.getLocalizedMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
 
