@@ -41,6 +41,28 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
+    public UserEntity createFirstAdminUser() {
+        UserEntity user = new UserEntity();
+        user.setUsername("test@example.com");
+        user.setPassword("test");
+        user.setFirst_name("test");
+        user.setLast_name("test");
+
+        RoleEntity role = new RoleEntity();
+        role.setId(1);
+
+        List<RoleEntity> roles = new ArrayList<>();
+        roles.add(role);
+
+        user.setRoles(roles);
+
+        String hashedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(hashedPassword);
+
+        return userRepository.save(user);
+    }
+
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity user = userRepository.findOneByUsername(username);
