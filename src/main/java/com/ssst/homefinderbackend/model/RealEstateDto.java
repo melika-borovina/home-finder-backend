@@ -14,6 +14,7 @@ public class RealEstateDto {
     private String imgAlt;
     private Integer bedrooms;
     private Integer bathrooms;
+    private Double avgRating;
     private String propertyType;
     private Double price;
     private Double size;
