@@ -95,6 +95,21 @@ public class UserService implements UserDetailsService {
         return new SimpleUser(userName);
     }
 
+    public UserEntity getUserWithoutPassword(String userName) {
+
+         UserEntity user = userRepository.findOneByUsername(userName);
+         UserEntity userResponse = new UserEntity();
+
+         userResponse.setRoles(user.getRoles());
+         userResponse.setFirst_name(user.getFirst_name());
+         userResponse.setLast_name(user.getLast_name());
+         userResponse.setRoles(user.getRoles());
+         userResponse.setUsername(user.getUsername());
+
+         return userResponse;
+    }
+
+
     public List<UserEntity> getAllUsers() {
         return userRepository.findAll();
     }
@@ -119,6 +134,7 @@ public class UserService implements UserDetailsService {
 
 
     private UserEntity getFullUserByUsername(String userName) {
+
         return userRepository.findOneByUsername(userName);
     }
 }

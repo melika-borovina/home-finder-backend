@@ -5,7 +5,6 @@ import com.ssst.homefinderbackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,8 +22,8 @@ public class UserController {
         }
 
     @GetMapping("/{username}")
-    public UserDetails getUserByUsername(@PathVariable("username") String username) {
-        return userService.loadUserByUsername(username);
+    public UserEntity getUserByUsername(@PathVariable("username") String username) {
+        return userService.getUserWithoutPassword(username);
     }
 
     @GetMapping("")
